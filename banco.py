@@ -16,10 +16,11 @@ def depositar(deposito, saldo, extrato):
 def sacar(valor_saque, saldo, extrato):
     if(saldo - valor_saque < 0):
         print("Ocorreu um erro na operação. Saldo insufisciente.")
+        return saldo, extrato
     else:
         saldo -= valor_saque
         print(f"Saque de R$ {valor_saque:.2f} realizado com sucesso.\n")
-        extrato += f"Saque de R$ {valor_saque:.2f}"
+        extrato += f"\nSaque de R$ {valor_saque:.2f}\n"
         return saldo, extrato
     
 
@@ -43,8 +44,11 @@ while True:
         if(saques <= LIMITE_SAQUE):
             valor_saque = float(input("Informe o valor a sacar: "))
             if(valor_saque < LIMITE_VALOR):
-                saldo, extrato = sacar(valor_saque, saldo, extrato)
-                saques += 1
+                try:
+                    saldo, extrato = sacar(valor_saque, saldo, extrato)
+                    saques += 1
+                except Exception as e:
+                    print("Ocorreu um erro durante a execução do programa:", e)
             else:
                 print("Desculpe! O limite de valor para saques diários foi ultrapassado.")
         else:
@@ -53,6 +57,7 @@ while True:
         caractere = "="
         print(f"\n{10*caractere} EXTRATO {10*caractere}")
         print(extrato)
+        print(f"\nSaldo => R$ {saldo:.2f}")
         print(f"{29*caractere}")
     else:
       print("Obrigado por usar o nosso banco.")
